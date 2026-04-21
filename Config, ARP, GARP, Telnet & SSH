@@ -1,0 +1,115 @@
+Modes on router
+
+User execution mode - Monitoring purpose
+Privilege mode - Troubleshooting purpose, running-config,statrup-config, show access list
+Global configuration mode - config router globally such as, NAT,ACL, Routing
+Interface configuration mode - Config only to specific interface, such as set IP, Mac, duplex, speed.
+Rommon mode - Used for Restore the IOS from TFTP server and Reverting the password.
+
+Symbols to identify the modes of router
+
+Router > User execution mode
+Router # Privilege mode
+Router (config) # Global configuration mode
+Router (config-if) # Interface configuration mode
+rommon 1 > Rommon mode
+
+Here are your comprehensive notes designed for quick recall and CCNA-level understanding.
+------------------------------
+## 1. The Hardware: PC, Switch (SW), and Router## PC (End Device)
+
+* Definition: The source or destination of data.
+* OSI Level: Layer 1–7 (Full Stack).
+* Config: Needs IP, Subnet Mask, and Default Gateway.
+* Real-Time Example: Your laptop accessing a website.
+
+## Switch (Layer 2)
+
+* Definition: Connects devices within the same local network (LAN) using MAC addresses.
+* OSI Level: Layer 2 (Data Link).
+* Working Process: Learns MAC addresses and puts them in a MAC Table.
+* Configuration:
+
+int vlan 1
+ip address 192.168.1.2 255.255.255.0
+no shut
+ip default-gateway 192.168.1.1
+
+
+## Router (Layer 3)
+
+* Definition: Connects different networks (LAN to WAN) using IP addresses.
+* OSI Level: Layer 3 (Network).
+* Working Process: Uses a Routing Table to find the best path for packets.
+* Configuration:
+
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shut
+
+
+------------------------------
+## 2. ARP & GARP (The Address Finders)## ARP (Address Resolution Protocol)
+
+* Definition: Maps a known IP address to an unknown MAC address.
+* OSI Level: Layer 2.5 (Works between L2 and L3).
+* Working Process:
+1. Request: Broadcast ("Who is 10.1?").
+   2. Reply: Unicast ("I am 10.1, here is my MAC").
+* Real-Time Example: Your PC needs to send data to the router but doesn't know the router’s MAC yet.
+
+## GARP (Gratuitous ARP)
+
+* Definition: An "unasked" ARP reply sent by a device to announce itself.
+* Working Process: Shouts its own IP/MAC to the network.
+* Real-Time Example: Detecting IP conflicts when you plug in a new PC.
+
+------------------------------
+## 3. Telnet & SSH (Remote Management)## Telnet
+
+* Definition: A protocol for remote CLI access. Insecure (Plain text).
+* Port Number: 23 (TCP).
+* OSI Level: Layer 7 (Application).
+* Configuration:
+
+line vty 0 4
+password cisco
+login
+
+
+## SSH (Secure Shell)
+
+* Definition: Secure, encrypted remote CLI access.
+* Port Number: 22 (TCP).
+* OSI Level: Layer 7 (Application).
+* Configuration:
+
+hostname R1
+ip domain-name lab.com
+crypto key generate rsa (choose 1024)
+username admin password cisco
+line vty 0 4
+login local
+transport input ssh
+
+
+------------------------------
+## 4. Key Summary Table
+
+| Feature | ARP | Telnet | SSH |
+|---|---|---|---|
+| Goal | Find MAC address | Remote Access | Secure Remote Access |
+| Port | N/A | 23 | 22 |
+| OSI Layer | Layer 2 | Layer 7 | Layer 7 |
+| Security | None (Trusting) | None (Plain Text) | High (Encrypted) |
+
+------------------------------
+## 5. Summary: "The Journey of a Packet"
+
+   1. PC looks at target IP. If it's on a different network, it looks for the Default Gateway.
+   2. ARP finds the MAC address of the Gateway.
+   3. Router receives the frame, strips the MAC, looks at the IP, and adds a new MAC for the next hop.
+   4. ICMP (Ping) confirms if the journey was successful.
+
+Do you want to start exploring VLANs to see how we can split one physical switch into multiple virtual ones?
+
