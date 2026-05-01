@@ -58,5 +58,14 @@ network 192.168.1.0 0.0.0.255 area 0
 * ping [IP]: Basic test.
 * traceroute [IP]: Detailed "hop-by-hop" map to find loops or breaks.
 
-Would you like me to walk you through how to configure a Switch with VLANs now, or do you have any specific questions on these notes?
 
+
+Imp
+
+What are DR and BDR?
+
+DR (Designated Router): The "Boss." Every other router on the segment sends its routing updates only to the DR. The DR then redistributes those updates to everyone else.
+
+BDR (Backup Designated Router): The "Assistant Boss." It listens to everything the DR does. If the DR fails, the BDR instantly takes over so the network doesn't go down.
+
+DROther: Any router that is not the DR or the BDR. These routers only form "Full" adjacencies with the DR and BDR.
